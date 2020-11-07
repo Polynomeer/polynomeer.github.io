@@ -9,4 +9,4 @@ sort: 1
 ```
 
 <!-- {% include list.liquid all=true %} -->
-{% include list.liquid %}
+<!-- {% include list.liquid %} -->
