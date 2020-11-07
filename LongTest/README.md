@@ -2,7 +2,7 @@
 sort: 3
 ---
 
-# Personal Study
+# Test
 
 ```
 {% raw %}{% include list.liquid all=true %}{% endraw %}
@@ -10,4 +10,5 @@ sort: 3
 {% include list.liquid all=true %}
 ```
 
-{% include list.liquid all=true %}
+<!-- {% include list.liquid all=true %} -->
+{% include list.liquid %}
