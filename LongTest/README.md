@@ -10,5 +10,4 @@ sort: 3
 {% include list.liquid all=true %}
 ```
 
-<!-- {% include list.liquid all=true %} -->
-{% include list.liquid %}
+{% include list.liquid all=true %}
