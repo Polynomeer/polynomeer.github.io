@@ -1,3 +1,3 @@
-# 2020 TIL
+# TIL
 
 source: `{{ page.path }}`
