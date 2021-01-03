@@ -2,7 +2,7 @@
 sort: 1
 ---
 
-# Personal Study
+# TIL
 
 ```
 {% raw %}{% include list.liquid all=true %}{% endraw %}
