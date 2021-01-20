@@ -12,7 +12,7 @@
 Icon
 
 # Local files for jekyll test
-._site/
+_site/
 
 # Thumbnails
 ._*
