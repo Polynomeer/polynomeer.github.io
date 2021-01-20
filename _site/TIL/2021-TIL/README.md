@@ -1,9 +1,6 @@
----
-sort: 2
----
+# 2021-TIL
 
-# Learning Arrangements
-
+source: `{{ page.path }}`
 
 ```
 {% raw %}{% include list.liquid all=true %}{% endraw %}
