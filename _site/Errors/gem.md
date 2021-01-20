@@ -42,7 +42,7 @@ You specified that jekyll-rtd-theme (>= 0) should come from source at `.` and
  #  -------------------------------------------
 ```
 
-디렉터리 내부에 Gemfile에서 gem "jekyll-rtd-theme"이 글로번에 이미 선언되어 있어서 겹친것같다. 이를 주석처리하니깐 해결되었다.
+디렉터리 내부에 Gemfile에서 gem "jekyll-rtd-theme"이 글로번에 이미 선언되어 있어서 겹친것같다. 이를 주석처리하니깐 로컬환경에서 잘 동작하였다.
 
 ```
 source "https://rubygems.org" # source "https://gems.ruby-china.com"
