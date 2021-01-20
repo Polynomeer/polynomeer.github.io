@@ -1,6 +1,6 @@
 title: Polynomeer's Blog
 lang: en
-description: This is study blog
+description: This is TIL blog
 
 theme: jekyll-rtd-theme
 
@@ -8,6 +8,9 @@ theme: jekyll-rtd-theme
 #   compress: true
 #   dist: false
 #   shortcodes: true
+
+layout: default
+comments: true
 
 readme_index:
   with_frontmatter: true
