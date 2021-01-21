@@ -1,4 +1,4 @@
-# Git and GitHub
+# Operating System
 
 source: `{{ page.path }}`
 
