@@ -1,6 +1,9 @@
+---
+sort: 9
+---
+
 # Study
 
-source: `{{ page.path }}`
 
 ```
 {% raw %}{% include list.liquid all=true %}{% endraw %}
