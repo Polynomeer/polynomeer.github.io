@@ -2,7 +2,7 @@
 sort: 6
 ---
 
-# Cheet Sheets
+# Cheat Sheet
 
 
 ```
