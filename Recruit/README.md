@@ -2,7 +2,7 @@
 sort: 8
 ---
 
-# Recuit
+# Recruit
 
 
 ```

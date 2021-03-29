@@ -1,4 +1,4 @@
-# Interview
+# Information
 
 source: `{{ page.path }}`
 
