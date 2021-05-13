@@ -1,4 +1,4 @@
-# WhiteShip live-study
+# Whiteship Study
 
 source: `{{ page.path }}`
 
