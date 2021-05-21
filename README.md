@@ -6,4 +6,4 @@
 
 ## Index
 
-{% include list.liquid %}
+{% include list.liquid top=true %}

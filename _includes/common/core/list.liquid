@@ -10,7 +10,5 @@
 {%- endif -%}
 
 {%- if include.top -%}
-    {%- for workdir in workdir_dirs %}
-        {% include common/core/_list_top.liquid %}
-    {% endfor -%}
+    {%- for workdir in workdir_dirs %}{% include common/core/_list_top.liquid %}{% endfor -%}
 {%- endif -%}
