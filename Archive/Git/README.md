@@ -1,4 +1,4 @@
-# Git & GitHub
+# Git
 
 source: `{{ page.path }}`
 
