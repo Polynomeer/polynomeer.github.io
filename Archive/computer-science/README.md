@@ -1,5 +1,3 @@
-# OOP
-
-source: `{{ page.path }}`
+# Computer Science
 
 {% include list.liquid all=true %}
