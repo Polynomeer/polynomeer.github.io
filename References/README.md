@@ -2,7 +2,9 @@
 sort: 10
 ---
 
-# Development
+# References
+
+## Development
 
 - [Naver D2](https://d2.naver.com/home)
 - [우아한 기술 블로그](https://woowabros.github.io)
