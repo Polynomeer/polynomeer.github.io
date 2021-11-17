@@ -20,7 +20,7 @@
 
 ## 애너테이션
 
-![annotation](../images/JavaAnnotations.jpg)
+![annotation](../../images/JavaAnnotations.jpg)
 
 _이미지 출처: https://www.geeksforgeeks.org/annotations-in-java_
 
@@ -44,7 +44,7 @@ import java.lang.annotation.*;
 public @interface Test {
 }
 ```
-### @Retention` 과 `@Target
+### `@Retention` 과 `@Target`
 
 `@Retention`과 `@Target`은 에너테이션에 대한 기본정보이며, 메타 에너테이션이라 한다. `@Retention`은 애너테이션의 유지정책에 관한 정보를 포함하며, 적용 코드가 유지되는 기간(생명주기 같은)을 지정한다. `@Target`은 애너테이션의 적용대상을 명시하는 용도로 사용된다. 영향을 끼치는 범위 라는 점에서 스코프와 비슷한 개념이다.
 
