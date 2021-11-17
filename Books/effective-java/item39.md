@@ -20,7 +20,7 @@
 
 ## 애너테이션
 
-![annotation](/Users/ham/Desktop/Blog/polynomeer.github.io/images/JavaAnnotations.jpg)
+![annotation](../images/JavaAnnotations.jpg)
 
 _이미지 출처: https://www.geeksforgeeks.org/annotations-in-java_
 
