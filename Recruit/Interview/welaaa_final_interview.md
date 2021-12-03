@@ -23,6 +23,8 @@ A) 음... 스태틱은 확실히 아니고, 클래스도 공유되고, 스택이
 
 Q) 네, 스택만 새로 생성됩니다.
 
+Q) 자바는 Call by reference 인가요?
+
 Q) PreparedStatement와 Statement의 차이가 무엇이죠?
 
 ### 스프링
