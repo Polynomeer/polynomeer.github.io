@@ -7,7 +7,7 @@
 저는 모든 문제를 쉽게 모델링하고 이해하려고 노력합니다. 모든 문제를 반드시 복잡한 코드로 해결해야할 필요는 없습니다. 때로는 좋은 구조나 좋은 정책이 얼마든지 더 좋은 해결방법이 되기도 합니다.
 
 - 📜　My sites : [**`Portfolio`**](https://amplified-apple-303.notion.site/130c9d7b5e554a4b86991428800cd611), [**`TIL`**](https://polynomeer.github.io/), [**`Blog`**](https://velog.io/@polynomeer)
-- 💼　I’m currently working on The Pirates
+- 💼　I’m currently working on [**`Dreamus Company`**](https://www.dreamuscompany.com)
 - 🌱　I’m currently learning `Java`, `Kotlin`, `Spring`, `SpringBoot`, `JPA`, `MySQL`, `AWS`
 - 👥　I’m looking to collaborate on the company using Java and Spring 
 - 🤔　I’m looking for help with `Java`, `Spring`, `SpringBoot`, `JPA`, `AWS`, `MySQL`
@@ -28,7 +28,7 @@
 
 ## Summary
 
-주로 TIL(Today I Learned)과 PS(Problem Solving), 그리고 책이나 강의의 내용을 정리하는 등 기록을 쌓아가는 블로그 입니다. 최대한 정리해서 정제된 글을 올리는 블로그는 [개발 블로그](https://velog.io/@polynomeer)를 참고하면 되겠습니다.
+주로 TIL(Today I Learned)과 PS(Problem Solving), 그리고 책이나 강의의 내용을 정리하는 등 기록을 쌓아가는 블로그 입니다. 최대한 정리해서 정제된 글을 올리는 블로그는 [개발 블로그](https://velog.io/@polynomeer)를 참고하면 감사하겠습니다.
 
 ## Index
 
