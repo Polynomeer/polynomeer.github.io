@@ -2,7 +2,7 @@ title: Polynomeer's Blog
 lang: en
 description: This is TIL blog
 
-theme: jekyll-rtd-theme
+theme: null
 
 # debug:
 #   compress: true
