@@ -22,6 +22,12 @@ sort: 11
 
 - [기억보단 기록을](https://jojoldu.tistory.com)
 
+## Jekyll
+
+- https://github.com/rundocs/jekyll-rtd-theme
+- https://www.jekyll-rtd-theme.rundocs.io
+- https://github.com/rundocs/rundocs.io
+- https://jekyllrb.com/docs/themes
 
 ## References
 
