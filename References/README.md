@@ -17,10 +17,13 @@ sort: 11
 - [Baeldung](https://www.baeldung.com)
 - [JavaPoint](https://www.javatpoint.com)
 
-
 ## Spring
 
 - [기억보단 기록을](https://jojoldu.tistory.com)
+
+### application properties
+
+- https://docs.spring.io/spring-boot/docs/1.5.6.RELEASE/reference/html/common-application-properties.html
 
 ## Jekyll
 
