@@ -46,3 +46,61 @@ public class RunnableDemo {
 ```warning
 병행 태스크들이 공유값을 읽거나 수정하면 그 결과를 예측할 수 없다. 즉, 동시성 문제가 발생하기 때문에 별도의 제어가 필요하다.
 ```
+
+### 10.1.2 Future
+
+Runnable은 태스크를 수행하지만 값은 내지 않는다. 결과를 계산하는 태스크가 있다면 `Callable<V>` 인터페이스를 사용하자.
+`Callable<V>`의 call 메서드는 Runnable의 run 메서드와 달리 V 타입 값을 반환한다.
+
+```java
+public interface Callable<V> {
+    V call() throws Exception;
+}
+```
+
+call 메서드는 결과를 얻는 코드에 넘길 수 있는 임의의 예외를 던질 수 있다. Callable을 실행하려면 ExecutorService에 전달하면 된다.
+
+```java
+ExecutorService executor = Executors.newFixedThreadPool();
+Callable<V> task = ...;
+Future<V> result = executor.submit(task);
+```
+
+태스크를 제출하면 Future를 얻는다. 
+
+- Future : 미래의 어느 시점에 결과가 나오는지 계산을 표현하는 객체
+    - V get() throws InterruptedExeption, ExecutionExeption
+    - V get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutExeption
+    - boolean cancel(boolean mayInterruptIfRunning)
+    - boolean isCancelled()
+    - boolean isDone()
+
+get 메서드는 결과가 나오거나 타임아웃에 이를 때까지 블록한다. 즉, get 메서드를 호출한 스레드는 메서드가 정상적으로 반환하거나 예외를 던질 때까지 일을 진행하지 않는다. call 메서드에서 값을 돌려주면 get 메서드는 해당 값을 반환한다. call 메서드에서 예외를 던지면 get 메서드는 해당 예외를 감싼 ExecutionException을 던진다. 타임아웃에 이르면 get 메서드는 ExecutionException을 던진다.
+
+cancel 메서드는 태스크 취소를 시도한다. 태스크가 이미 실행 중인 상태가 아니면 해당 태스크는 스케줄링 되지 않는다. 태스크가 이미 실행 중이고 mayInterruptIfRunning이 true면 해당 태스크를 실행하는 스레드가 인터럽드된다.
+
+```note
+태스크를 인터럽트할 수 있게 하려면 해당 태스크에서 인터럽션 요청을 주기적으로 확인해야 한다. 서브태스크 일부가 성공했을 때 취소할 태스크라면 이렇게 해야 한다.
+```
+
+태스크가 여러 서브태스크의 결과를 기다려야 할 수도 있다. 각 서브태스크를 별도로 제출하지 말고, Callable 인스턴스의 Collection을 인수로 전달해 invokeAll 메서드를 호출하면 된다.
+
+---
+
+## 10.2 비동기 계산
+
+병행 계산을 다룰 때 태스크를 나누고 모두 완료될 때까지 대기하는 방법이 항상 좋은 방법은 아니다. 때로는 대기 없는 계산, 즉 비동기 계산을 구현하는 것이 필요하다.
+
+### 10.2.1 Completable Future
+
+Future 객체에서 값을 얻으려면 get 메서드를 호출하고 값이 나올 때까지 블록된 채로 있어야 한다. Future 인터페이스를 구현한 CompletableFuture 클래스는 결과를 얻는 두 번째 메커니즘을 제공한다. 이 메커니즘을 이용하려면 결과가 나왔을 때 (어떤 스레드에서) 해당 결과와 함께 호출될 콜백을 등록해야 한다.
+
+```java
+CompletableFuture<String> f = ...;
+f.thenAccept((String s) -> 결과 s를 처리한다);
+```
+
+이 방법으로 블로킹 없이 결과가 나오는 즉시 처리할 수 있다.
+
+#### CompletableFuture 객체를 반환하는 API
+- HttpClient 클래스는 웹 페이지를 비동기로 가져올 수 있다.
