@@ -25,19 +25,11 @@
 
 ## Statistics
 
-<div align="center">
+![github-readme-stats](https://github-readme-stats.vercel.app/api?username=polynomeer&show_icons=true&theme=material-palenight&hide_border=true&bg_color=20232a&icon_color=E3E3E3A8&text_color=fff&title_color=918FE0)
 
-<a href="https://github.com/anuraghazra/github-readme-stats">
-  ![github-readme-stats](https://github-readme-stats.vercel.app/api?username=polynomeer&show_icons=true&theme=material-palenight&hide_border=true&bg_color=20232a&icon_color=E3E3E3A8&text_color=fff&title_color=918FE0)
-</a>
-<a href="https://github.com/polynomeer/github-stats">
- ![github-stats](https://raw.githubusercontent.com/Polynomeer/github-stats-transparent/output/generated/languages.svg)
-</a>
-<a href="https://github.com/ashutosh00710/github-readme-activity-graph">
+![github-stats](https://raw.githubusercontent.com/Polynomeer/github-stats-transparent/output/generated/languages.svg)
+
 ![github-readme-activity-graph](https://activity-graph.herokuapp.com/graph?username=polynomeer&theme=react-dark&bg_color=20232a&hide_border=true&line=8A87D0&color=918FE0)
-</a>
-
-</div>
 
 ## Index
 
