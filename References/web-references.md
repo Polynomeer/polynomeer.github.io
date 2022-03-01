@@ -5,11 +5,18 @@
 ### Event Storming
 
 - https://www.youtube.com/watch?v=F7EnW8dfetU
+- https://www.youtube.com/watch?v=STKCRSUsyP0
+- https://www.youtube.com/watch?v=pMuiVlnGqjk
+- https://www.youtube.com/watch?v=mLXQIYEwK24
 
-## Logging
+## API
 
-- https://taetaetae.github.io/2019/06/30/controller-common-logging/
+- https://www.redhat.com/ko/topics/api/what-are-application-programming-interfaces
 
-## One Time URL
+### Health Check
+
+- https://microservices.io/patterns/observability/health-check-api.html
+
+### One-time URL
 
 - https://medium.com/@marcellogpassos/creating-secure-and-temporary-download-links-with-java-6a0dd3a074fa
