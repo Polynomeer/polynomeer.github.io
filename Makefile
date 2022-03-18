@@ -20,7 +20,7 @@ help:
 checkout:
 	@git checkout _config.yml
 	@git checkout assets/js/theme.min.js
-	@git checkout assets/css/theme.min.css
+	# @git checkout assets/css/theme.min.css
 
 install:
 	@gem install jekyll bundler
