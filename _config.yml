@@ -1,8 +1,9 @@
 title: Polynomeer's Blog
 lang: en
-description: This is TIL blog
+description: Library Blog
+repository: Polynomeer/polynomeer.github.io
 
-theme: null
+theme: jekyll-theme-minimal
 
 # debug:
 #   compress: true
