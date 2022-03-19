@@ -4,7 +4,6 @@ description: Library Blog
 repository: Polynomeer/polynomeer.github.io
 
 theme: null
-remote_theme: rundocs/jekyll-rtd-theme@v1
 
 # debug:
 #   compress: true
