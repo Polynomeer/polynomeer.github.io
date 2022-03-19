@@ -43,3 +43,10 @@ scss: |
     color: #fff;
     background: #3b5998;
   }
+
+  .toctree .caption {
+      color: #6c89c6;
+      font-weight: 600;
+      line-height: 32px;
+  }
+  
