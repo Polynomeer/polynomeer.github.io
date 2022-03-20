@@ -1,7 +1,3 @@
----
-sort: 10
----
-
 # Cheat Sheet
 
 {% include list.liquid all=true %}
