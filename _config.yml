@@ -44,6 +44,16 @@ scss: |
     background: #3b5998;
   }
 
+  .header input {
+    border-color: #2f477a;
+  }
+
+  .header input {
+    border-radius: 10px;
+    border: 1px solid #2f477a;
+    font-size: 80%;
+  }
+
   .toctree .caption {
       color: #6c89c6;
       font-weight: 600;
