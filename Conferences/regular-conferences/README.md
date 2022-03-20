@@ -1,3 +1,3 @@
-# 2021 Conferences
+# Regular Conferences
 
 {% include list.liquid all=true %}
