@@ -55,3 +55,20 @@ API를 한방에 다 보내는 것이 좋은지? 아니면 페이지별로 요�
 그리고 mockito 자체가 뭔가.. 너무 짜고 치는 고스톱이 아닌가 하는 생각이 든다.
 
 {% include list.liquid all=true %}
+
+## REST API
+
+### 권한별로 API 응답을 달리하려면 어떻게 하는가?
+
+권한별로 응답을 달리하기 위해서는 두 가지 방법이 있다. 우선, API를 별도로 만들어서 FE에서 애초에 다른 API를 호출하는 방법이 있다. 이때는 API를 별도로 만들어야한다. 또 다른 방법으로는 같은 요청에 대해서 권한을 검증하여 분기처리하고, 응답을 다르게 내려주는 것이다.
+
+- https://stackoverflow.com/questions/67280775/rest-api-response-depending-on-who-made-the-request
+- https://stackoverflow.com/questions/65242931/rest-api-responses-based-on-authentication-best-practices
+- https://stackoverflow.com/questions/56805808/restful-api-different-responses-based-on-user-roles
+- https://stackoverflow.com/questions/40056487/rest-api-is-it-ok-to-return-individual-user-data-inside-a-resource
+- https://stackoverflow.com/questions/10996328/different-rest-resource-content-based-on-user-viewing-privileges
+- https://forum.rasa.com/t/different-response-for-each-users-types/51429/4
+ 
+### 디바이스 별로 API 응답을 다르게 하려면 어떻게 하는게 좋은가?
+
+보통은 디바이스 별로 API를 별도로 만드는 경우가 많다. 그것이 가장 깔끔하고 쉬운 방법이다. 하지만 하나의 API에서 모든 디바이스에 대한 응답을 처리한다고 하면 request로 디바이스를 식별하여 분기처리를 하던가, 다형성을 적용하여 다른 응답을 내려줄 수 있다.
