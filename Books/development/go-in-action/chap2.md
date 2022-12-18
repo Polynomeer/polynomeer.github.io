@@ -322,3 +322,428 @@ feed와 matcher 매개변수의 값은 루프가 실행될 때마다 변경된�
 위 코드는 또 하나의 익명 함수를 고루틴으로서 실행한다. 이 익명 함수는 매개변수를 전혀 사용하지 않으며, 클로저를 호출하여 WaitGroup과 results 변수에 접근한다. 이 고루틴은 WaitGroup 값의 Wait 메서드를 호출하여 WaitGroup 내의 카운터 값이 0이 될 때까지 고루틴의 실행을 중단한다. 카운터 값이 0이 되면, 이 고루틴의 채널 내장 함수인 close 함수를 호출하고 그러면 프로그램이 종료될 것이다.
 
 Run 함수의 마지막 완성은 Display 함수를 호출하는 것이다. 이 함수는 match.go 코드 파일에 선언되어 있다. 이 함수는 채널 내의 모든 검색 결과를 화면에 출력하며, 이 함수가 리턴되어야 프로그램이 종료된다.
+
+### 2.3.2 feed.go
+
+이 함수는 data.json 파일을 읽어 그 안의 데이터 피드를 슬라이스 타입으로 리턴한다. 이 피드 목록은 각각의 검색기를 통해 검색할 콘텐츠를 가져오기 위한 피드 목록이다.
+
+```go
+package search
+
+import (
+	"encoding/json"
+	"os"
+)
+
+const dataFile = "data/data.json"
+
+// Feed contains information we need to process a feed.
+type Feed struct {
+	Name string `json:"site"`
+	URI  string `json:"link"`
+	Type string `json:"type"`
+}
+
+// RetrieveFeeds reads and unmarshals the feed data file.
+func RetrieveFeeds() ([]*Feed, error) {
+	// Open the file.
+	file, err := os.Open(dataFile)
+	if err != nil {
+		return nil, err
+	}
+
+	// Schedule the file to be closed once
+	// the function returns.
+	defer file.Close()
+
+	// Decode the file into a slice of pointers
+	// to Feed values.
+	var feeds []*Feed
+	err = json.NewDecoder(file).Decode(&feeds)
+
+	// We don't need to check for errors, the caller can do this.
+	return feeds, err
+}
+```
+
+**패키지 및 임포트**
+
+search 폴더에 있으므로 search 패키지 이름을 사용한다. 이어서 표준 라이브러리로부터 두 개의 패키지를 가져오는 코드가 작성되어있다. json 패키지는 JSON 데이터를 인코딩/디코딩하는 기능을 제공하며, os 패키지는 파일을 읽는 등의 운영체제 기능을 활용할 수 있는 패키지다.
+
+json 패키지를 가져오려면 폴더 경로에 encoding 폴더의 경로를 포함해야 한다. 하지만 패키지를 지정하기 위한 경로와는 무관하게 패키지의 이름은 json으로 참조하면 된다. 이 규칙은 표준 라이브러리에 포함된 패키지에는 동일하게 적용된다.
+
+**상수 선언**
+
+08번 줄에서는 dataFile이라는 이름의 상수를 선언하고, 이 상수에 디스크상의 데이터 파일을 가리키는 상대 경로를 표현하는 문자열을 대입했다. Go 컴파일러는 대입 연산자 오른쪽의 값을 바탕으로 변수의 타입을 유추할 수 있기 때문에 상수를 선언할 때 타입을 명시할 필요가 없다. 또한 상수 이름이 소문자이므로 이 상수는 외부로 노출되지 않는 비공개 상수가 된다.
+
+**JSON 문서를 디코딩할 구조체**
+
+```json
+[
+  {
+    "site": "npr",
+    "link": "http://www.npr.org/rss/rss.php?id=1001",
+    "type": "rss"
+  },
+  {
+    "site": "npr",
+    "link": "http://www.npr.org/rss/rss.php?id=1008",
+    "type": "rss"
+  },
+  ...
+]
+```
+
+data.json의 내용은 위와 같은데, 프로그램 내에서 사용하려면 디코딩을 통해 구조체의 슬라이스로 변환해야 한다. 
+
+```go
+// Feed contains information we need to process a feed.
+type Feed struct {
+	Name string `json:"site"`
+	URI  string `json:"link"`
+	Type string `json:"type"`
+}
+```
+
+Feed 구조체는 패키지 외부로 노출되는 타입이다. 이 구조체는 데이터 파일의 JSON 문서에 정의된 필드들에 대응하는 세 개의 필드를 정의하고 있다. 필드의 선언부를 살펴보면 JSON 디코딩 함수가 Feed 타입 값들의 슬라이스를 생성할 때 참조할 메타데이터를 제공하는 태그를 함께 선언되어 있음을 볼 수 있다. 각 태그는 구조체 타입의 필드 이름과 JSON 문서 내의 필드 이름을 매핑하고 있다.
+
+**RetrieveFeeds 함수**
+
+```go
+// RetrieveFeeds reads and unmarshals the feed data file.
+func RetrieveFeeds() ([]*Feed, error) {
+	// Open the file.
+	file, err := os.Open(dataFile)
+	if err != nil {
+		return nil, err
+	}
+
+	// Schedule the file to be closed once
+	// the function returns.
+	defer file.Close()
+
+	// Decode the file into a slice of pointers
+	// to Feed values.
+	var feeds []*Feed
+	err = json.NewDecoder(file).Decode(&feeds)
+
+	// We don't need to check for errors, the caller can do this.
+	return feeds, err
+}
+```
+
+RetrieveFeeds 함수는 데이터 파일을 읽어, 각각의 JSON 문서를 디코딩하여 Feed 타입 값의 슬라이스로 변환하는 역할을 수행한다. 이 함수는 매개변수를 정의하지 않으며 두 개의 값을 리턴한다. 첫 번째 리턴 값은 Feed 타입 값들의 슬라이스에 대한 포인터다. 두 번째 리턴 값은 함수 호출이 성공하지 못한 경우에 이를 보고하기 위한 error 값이다.
+
+그리고 os 패키지를 이용해 데이터 파일을 열고 있다. Open 메서드를 호출할 때 데이터 파일의 상대 경로를 지정하면 두 개의 리턴 값을 전달받을 수 있다. 첫 번째 리턴 값은 File 타입 구조체에 대한 포인터이며, 두 번째 리턴 값은 Open 메서드 호출이 성공했는지를 판단하기 위한 에러 값이다. 그 다음 줄에서 바로 에러 값을 체크하여 파일을 올바르게 열었는지 확인한 후, 만일 그렇지 않다면 에러를 리턴한다.
+
+파일을 성공적으로 열었다면 그 다음 코드가 이어서 실행되며, 여기서는 defer 키워드를 활용한다. defer 키워드는 함수가 리턴된 직후에 실행될 작업을 예약하기 위한 키워드다. **필요한 작업을 수행한 후 파일을 닫는 것은 전적으로 개발자의 몫이다.** 이 경우 defer 키워드를 이용하면 close 메서드 호출을 예약하여 이 메서드가 반드시 호출되도록 보장할 수 있다. 이렇게 예약된 작업은 심지어 함수가 패닉 상태에 빠져 예상치 못하게 종료되더라도 반드시 실행된다. defer 키워드를 이용하면 파일을 여는 코드 주변에 파일을 닫기 위한 코드를 작성할 수 있기 때문에 가독성이 향상되는 것은 물론, 개발자의 실수로 인한 버그도 줄일 수 있다.
+
+그 다음 줄에서는 feeds라는 이름으로 빈 슬라이스 변수를 생성한다. 이 변수는 Feed 타입 값들에 대한 포인터 변수다. json 패키지의 NewDecoder 함수는 앞서 Open 메서드를 통해 열었던 파일의 핸들을 전달받아, 이 파일을 디코딩할 수 있는 Decoder 타입의 포인터 값을 리턴한다. 이 포인터 값을 통해 Decode 메서드를 호출하면서 슬라이스의 주소를 전달한다. 그러면 Decode 메서드는 데이터 파일을 디코딩하여 우리가 전달한 슬라이스에 Feed 타입 값들을 채운다.
+
+마지막 줄에서는 슬라이스와 에러 값을 호출 함수에 리턴한다. 이 예제의 경우 함수 내에서 Decode 메서드를 호출한 후 에러 값을 체크할 필요가 없다. 이 함수가 실행되고 나면 이 함수를 호출한 함수가 에러 값을 체크하여 이후의 작업을 수행할지 판단하면 되기 때문이다.
+
+> **Decode 메서드**
+>
+> ```go
+> func (dec *Decoder) Decode(v interface{}) error
+> ```
+>
+> Decode 메서드는 어떤 타입이든 받아들일 수 있도록 설계되어 있다. Decode 메서드의 매개변수는 interface{} 타입의 값을 전달받는다. 이 값은 Go에서는 특별하게 취급하는 타입이며, reflect 패키지를 이용한 리플렉션(reflection) 지원이 가능한 타입이다.
+
+### 2.3.3 match.go/default.go
+
+**match.go**
+
+match.go 파일에는 search 패키지의 Run 함수가 사용할 여러 종류의 검색기를 생성하기 위한 코드가 작성되어 있다.
+
+```go
+package search
+
+import (
+	"log"
+)
+
+// Result contains the result of a search.
+type Result struct {
+	Field   string
+	Content string
+}
+
+// Matcher defines the behavior required by types that want
+// to implement a new search type.
+type Matcher interface {
+	Search(feed *Feed, searchTerm string) ([]*Result, error)
+}
+
+// Match is launched as a goroutine for each individual feed to run
+// searches concurrently.
+func Match(matcher Matcher, feed *Feed, searchTerm string, results chan<- *Result) {
+	// Perform the search against the specified matcher.
+	searchResults, err := matcher.Search(feed, searchTerm)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	// Write the results to the channel.
+	for _, result := range searchResults {
+		results <- result
+	}
+}
+
+// Display writes results to the console window as they
+// are received by the individual goroutines.
+func Display(results chan *Result) {
+	// The channel blocks until a result is written to the channel.
+	// Once the channel is closed the for loop terminates.
+	for result := range results {
+		log.Printf("%s:\n%s\n\n", result.Field, result.Content)
+	}
+}
+```
+
+**구조체 선언부**
+
+먼저, Matcher라는 이름의 인터페이스 타입을 선언하고 있다. 이는 구조체 타입과는 다르며, 구조체나 다른 명명된 타입들이 어떤 조건을 만족하기 위해 구현해야 하는 **동작**을 정의하는 타입이다. 인터페이스의 동작은 타입 내부에 선언된 메서드에 의해 정의된다.
+
+Matcher 인터페이스의 경우는 Search라는 하나의 메서드만을 선언하고 있다. 이 메서드는  Feed 타입에 대한 포인터와 string 타입으로 표현된 검색어를 매개변수로 전달받는다. 또한 이 메서드는 Result 타입의 포인터에 대한 슬라이스와 에러 값 등 두 개의 값을 리턴한다.
+
+> 인터페이스를 정의할 때는 Go의 네이밍 규칙을 준수하는 것이 좋다. 인터페이스가 하나의 메서드만을 선언하고 있다면 인터페이스의 이름은 er 접미사로 끝나야 한다. 예를 들어, Matcher는 Search라는 하나의 메서드를 선언하므로 er로 끝난다.
+
+**Match 함수**
+
+이 함수는 Matcher 인터페이스를 구현하는 값이나 포인터에 의해 실제 검색을 수행하는 함수다. Matcher 타입의 값을 첫 번째 매개변수를 통해 전달받는다. 따라서 이 매개변수에는 Matcher 인터페이스를 구현한 타입의 값이나 포인터만 전달할 수 있다. defaultMatcher 타입은 이제 값 수신기로 선언된 인터페이스를 구현하고 있기 때문에 defaultMatcher 타입의 값이나 포인터 역시 이 함수에 전달할 수 있다.
+
+함수의 첫 번째 줄을 보면, 함수에 전달된 Matcher 타입의 값에 대해 Search 메서드를 호출한다. 이 시점에서 Matcher 매개변수에 대입된 타입에서 구현한 Search 메서드가 실행된다. 일단 Search 메서드가 리턴되면, 그 다음 줄에서 에러 값을 검사하여 에러가 발생했는지 확인한다. 에러가 발생했으면 에러 내용을 로그에 기록한 후 리턴한다. 그렇지 않다면 검색 결과가 존재할 것이므로 이 검색 결과를 채널에 기록해서 이 채널을 리스닝하는 main 함수에 검색 결과를 전달한다.
+
+마지막 줄에서는 for range 루프를 돌면서 검색 결과를 기록한다. 그러면 Display 함수에서 채널을 닫은 후 모든 검색 결과를 콘솔 창에 출력한다.
+
+**Display 함수**
+
+이 함수는 검색 고루틴들이 전달한 검색 결과들을 기록하기 전까지 프로그램이 종료되지 않도록 한다. 이는 채널을 이용한 덕분에 리턴되기 전에 모든 검색 결과를 처리할 수 있다. 그 과정은 채널이 닫히는 시점에 채널과 range 함수의 동작에 달려있다.
+
+**default.go**
+
+```go
+package search
+
+// defaultMatcher implements the default matcher.
+type defaultMatcher struct{}
+
+// init registers the default matcher with the program.
+func init() {
+	var matcher defaultMatcher
+	Register("default", matcher)
+}
+
+// Search implements the behavior for the default matcher.
+func (m defaultMatcher) Search(feed *Feed, searchTerm string) ([]*Result, error) {
+	return nil, nil
+}
+```
+
+default.go 파일에는 init이라는 특별한 함수가 선언되어 있다. 이 함수는 main.go 파일에서와 마찬가지로 프로그램 내에 선언된 모든 init 함수는 main 함수가 실행되기 이전에 호출된다. 컴파일러는 init 함수를 발견하면 main 함수를 호출하기 전에 이 함수를 호출하도록 예약한다. 그리고 default.go 파일의 함수는 필요한 동작을 수행한다. 그 동작이란, defaultManager 타입의 값을 생성하고 그 값을 search.go 파일에 선언된  Register 함수에 전달하여 검색기를 등록하는 것이다.
+
+## 2.4 RSS 검색기
+
+RSS 검색기의 구조는 기본 검색기의 구조와 거의 동일하다. 단 한 가지 다른 점은 인터페이스의 메서드인 Search 메서드를 구현하는 과정이며, 바로 이 부분을 통해 각 검색기가 고유한 동작을 수행하게 된다.
+
+**package 선언부**
+
+```go
+package matchers
+
+import (
+	"encoding/xml"
+	"errors"
+	"fmt"
+	"log"
+	"net/http"
+	"regexp"
+
+	"github.com/goinaction/code/chapter2/sample/search"
+)
+```
+
+패키지 이름은 matchers라는 폴더에 저장할 것이므로 동일하게 matchers로 정의한다. 다음으로 표준 라이브러리로부터 6개의 패키지를 가져온다. 그 외에 search 패키지도 가져온다. 앞서 언급했듯 xml이나 http 같은 일부 표준 라이브러리는 표준 라이브러리의 서브폴더에서 가져와야 한다.
+
+**구조체 정의**
+
+```go
+type (
+	// item defines the fields associated with the item tag
+	// in the rss document.
+	item struct {
+		XMLName     xml.Name `xml:"item"`
+		PubDate     string   `xml:"pubDate"`
+		Title       string   `xml:"title"`
+		Description string   `xml:"description"`
+		Link        string   `xml:"link"`
+		GUID        string   `xml:"guid"`
+		GeoRssPoint string   `xml:"georss:point"`
+	}
+
+	// image defines the fields associated with the image tag
+	// in the rss document.
+	image struct {
+		XMLName xml.Name `xml:"image"`
+		URL     string   `xml:"url"`
+		Title   string   `xml:"title"`
+		Link    string   `xml:"link"`
+	}
+
+	// channel defines the fields associated with the channel tag
+	// in the rss document.
+	channel struct {
+		XMLName        xml.Name `xml:"channel"`
+		Title          string   `xml:"title"`
+		Description    string   `xml:"description"`
+		Link           string   `xml:"link"`
+		PubDate        string   `xml:"pubDate"`
+		LastBuildDate  string   `xml:"lastBuildDate"`
+		TTL            string   `xml:"ttl"`
+		Language       string   `xml:"language"`
+		ManagingEditor string   `xml:"managingEditor"`
+		WebMaster      string   `xml:"webMaster"`
+		Image          image    `xml:"image"`
+		Item           []item   `xml:"item"`
+	}
+
+	// rssDocument defines the fields associated with the rss document.
+	rssDocument struct {
+		XMLName xml.Name `xml:"rss"`
+		Channel channel  `xml:"channel"`
+	}
+)
+```
+
+RSS 문서를 디코딩하여 프로그램 내에서 문서 데이터를 처리하려면 위와 같이 네 개의 구조체 타입을 정의해야 한다. 이 구조체들을 이용하면 이 구조와 일치하는 모든 RSS 문서들을 처리할 수 있다. XML을 디코딩하는 방법은 feed.go 파일에서 JSON 문서를 디코딩하는 방법과 완전히 동일하다.
+
+**rssMatcher 타입 선언**
+
+```go
+// rssMatcher implements the Matcher interface.
+type rssMatcher struct{}
+```
+
+이 코드는 defaultMatcher 타입을 선언했을 때와 동일하다. Matcher 인터페이스를 구현할 뿐 관리해야 할 상태가 없기 때문에 빈 구조체를 사용해도 무방하다.
+
+**init 함수를 통한 검색기 등록**
+
+```go
+// init registers the matcher with the program.
+func init() {
+	var matcher rssMatcher
+	search.Register("rss", matcher)
+}
+```
+
+기본 검색기를 등록하던 방법과 마찬가지로, init 함수를 통해 rssMatcher 타입을 프로그램에 등록하면 된다.
+
+**retrieve 메서드**
+
+```go
+// retrieve performs a HTTP Get request for the rss feed and decodes the results.
+func (m rssMatcher) retrieve(feed *search.Feed) (*rssDocument, error) {
+	if feed.URI == "" {
+		return nil, errors.New("No rss feed uri provided")
+	}
+
+	// Retrieve the rss feed document from the web.
+	resp, err := http.Get(feed.URI)
+	if err != nil {
+		return nil, err
+	}
+
+	// Close the response once we return from the function.
+	defer resp.Body.Close()
+
+	// Check the status code for a 200 so we know we have received a
+	// proper response.
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("HTTP Response Error %d\n", resp.StatusCode)
+	}
+
+	// Decode the rss feed document into our struct type.
+	// We don't need to check for errors, the caller can do this.
+	var document rssDocument
+	err = xml.NewDecoder(resp.Body).Decode(&document)
+	return &document, err
+}
+```
+
+비공개 메서드인 retrieve 메서드는 각각의 피드 링크를 이용해 RSS 문서를 웹에서 다운로드한다. http 패키지의 Get 메서드를 호출하고, Get 메서드가 리턴되면 Response 타입에 대한 포인터가 리턴된다.
+
+에러를 검사한 후 올바른 응답을 얻었다면 defer 키워드를 통해 Close 메서드의 호출을 예약한다.
+
+그 다음 줄에서는 Response 값의 StatusCode 필드를 확인해서 200이라는 값을 전달받았는지를 확인한다. 200이 아닌 다른 값이 전달되었다면 그 응답은 오류로 처리해야 한다. 따라서 200이 아닌 경우에는  fmt 패키지의 Errorf 함수를 이용해 사용자정의 에러를 리턴한다.
+
+마지막 세 줄의 코드는 JSON 데이터 파일을 디코드할 때의 코드와 거의 유사하다. 이번에는  xml 패키지에 정의된 NewDecoder라는 동일한 이름의 함수를 호출하면 Decoder 타입에 대한 포인터를 리턴받는다. 이 포인터를 이용해서 Decode 메서드를 호출하면서 rssDocument 타입의 지역 변수인 document 변수의 주소를 전달한다. 그러면 rssDocument 타입 값의 주소와 에러가 리턴된다.
+
+**Search 메서드**
+
+```go
+// Search looks at the document for the specified search term.
+func (m rssMatcher) Search(feed *search.Feed, searchTerm string) ([]*search.Result, error) {
+	var results []*search.Result
+
+	log.Printf("Search Feed Type[%s] Site[%s] For URI[%s]\n", feed.Type, feed.Name, feed.URI)
+
+	// Retrieve the data to search.
+	document, err := m.retrieve(feed)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, channelItem := range document.Channel.Item {
+		// Check the title for the search term.
+		matched, err := regexp.MatchString(searchTerm, channelItem.Title)
+		if err != nil {
+			return nil, err
+		}
+
+		// If we found a match save the result.
+		if matched {
+			results = append(results, &search.Result{
+				Field:   "Title",
+				Content: channelItem.Title,
+			})
+		}
+
+		// Check the description for the search term.
+		matched, err = regexp.MatchString(searchTerm, channelItem.Description)
+		if err != nil {
+			return nil, err
+		}
+
+		// If we found a match save the result.
+		if matched {
+			results = append(results, &search.Result{
+				Field:   "Description",
+				Content: channelItem.Description,
+			})
+		}
+	}
+
+	return results, nil
+}
+```
+
+먼저, var 키워드를 이용하여 nil로 초기화된 Result 타입 값의 슬라이스 변수를 선언한다. 그리고 retrieve 메서드를 호출해서 웹 요청을 생성한다. retriee 메서드를 호출하면 rssDocument 타입에 대한 포인터와 에러 값이 리턴된다. 그 후 지금까지 살펴본 코드와 마찬가지로, 에러 값을 검사하여 이 값이 존재하면 에러를 리턴한다. 에러 값이 존재하지 않는다면, 결과를 대상으로 루프를 실행하면서 RSS 문서의 title과 description 필드에 검색어가 포함되어 있는지 확인한다.
+
+document.Channel.Item 값은 item 타입 값의 슬라이스이므로 for range 구문을 이용하여 모든 아이템들을 반복해서 조회할 수 있다. 그 다음 줄에서는  regexp 패키지의 MatchString 함수를 이요하여 channelItem 변수의 Title 필드의 값에 검색어가 존재하는지 확인한다. 그리고 이러를 검사하여 에러가 존재하지 않으면 결과를 확인한다.
+
+만일 MatchString 메서드를 호출한 결과인 matched 변수의 값이 true이면 내장함수인 append 함수를 호출하여 results 슬라이스에 검색 결과를 추가한다. append 내장 함수는 필요에 따라 슬라이스의 크기와 길이를 증가시키는 함수이다. append 메서드의 첫 번째 매개변수는 값을 덧붙일 슬라이스 값이며, 두 번째 매개변수는 슬라이스에 추가하고자 하는 값이다. 예제는 Result 타입의 값을 선언하고 초기화하기 위해 구조체 표현식(struct literal)을 사용했으므로 앰퍼샌드 연산자(&)를 이용하여 슬라이스가 저장된 메모리의 주소를 가져왔다.
+
+제목 부분에 대한 검색을 마친 후에는 동일한 검색 로직을 상세 설명 필드에 대해 한 번 더 수행한다. 마지막으로 최종 검색 결과를 호출 함수에 리턴한다.
+
+## 2.5 요약
+
+- 모든 코드 파일은 패키지에 속해야 하며, 패키지 이름은 코드 파일이 존재하는 폴더의 이름과 동일해야 한다.
+- Go는 변수를 선언하고 초기화하기 위한 여러 방법을 제공한다. 변수의 값이 명시적으로 초기화되지 않은 경우에는 컴파일러가 해당 변수를 제로 값으로 초기화한다.
+- 포인터는 함수와 고루틴 간에 데이터를 공유하기 위한 방법을 제공한다.
+- 채널을 이용하여 고루틴을 실행함으로써 동시성과 동기화를 처리할 수 있다.
+- Go는 Go의 내장 데이터 구조체를 지원하기 위한 내장 함수를 제공한다.
+- 표준 라이브러리는 강력한 기능을 수행하는 여러 패키지를 제공한다.
+- Go의 인터페이스를 이용하면 범용 코드와 프레임워크를 작성할 수 있다.
+
