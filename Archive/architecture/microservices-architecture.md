@@ -81,7 +81,7 @@ _출처: https://www.instana.com/blog/cloud-native-seeing-through-hype/_
 - https://www.oreilly.com/library/view/hands-on-software-architecture/9781788622592/bdde195b-2a5e-4ca6-a297-9aa85e0fbc81.xhtml\
 - https://entrepreneurshandbook.co/antifragility-how-to-turn-your-business-into-an-immortal-hydra-77b1054c6b48
 
-### Cloud Native
+### Cloud Nat
 
 - https://www.cncf.io/
 - https://github.com/cncf/foundation/blob/main/charter.md

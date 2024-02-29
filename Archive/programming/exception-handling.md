@@ -4,13 +4,15 @@
 
 ### Exception Hierarchy
 
-확인된 예외
+#### Checked Exception
 이는 메서드의 throws 절에서 선언해야 하는 예외입니다. 그것들은 예외를 확장하고 "직접 보는" 유형의 예외가 되도록 의도되었습니다. Java는 어떻게든 프로그램 외부의 외부 요인에 의존하기 때문에 이를 처리하기를 원합니다. 확인된 예외는 정상적인 시스템 작동 중에 발생할 수 있는 예상된 문제를 나타냅니다. 대부분 이러한 예외는 네트워크를 통해 또는 파일 시스템에서 외부 시스템을 사용하려고 할 때 발생합니다. 대부분의 경우 확인된 예외에 대한 올바른 응답은 나중에 다시 시도하거나 사용자에게 입력을 수정하라는 메시지를 표시하는 것입니다.
 
-확인되지 않은 예외
+#### Unchecked Exception
+
 throws 절에서 선언할 필요가 없는 예외입니다. 프로그래밍 오류로 인해 대부분 런타임에 생성되므로 JVM은 이를 처리하도록 강제하지 않습니다. 그들은 RuntimeException 을 확장합니다 . 가장 흔한 예는 NullPointerException[무섭다.. 그렇지?]. 확인되지 않은 예외는 재시도해서는 안 되며 올바른 조치는 일반적으로 아무 작업도 수행하지 않고 메서드에서 실행 스택을 통해 나오도록 하는 것입니다. 높은 수준의 실행에서는 이러한 유형의 예외를 기록해야 합니다.
 
-오류
+#### Error
+
 거의 확실하게 복구할 수 없는 심각한 런타임 환경 문제입니다. 몇 가지 예는 OutOfMemoryError, LinkageError 및 StackOverflowError입니다. 그들은 일반적으로 프로그램이나 프로그램의 일부를 충돌시킵니다. 올바른 로깅 방법만이 오류의 정확한 원인을 파악하는 데 도움이 됩니다.
 
 ### Exception Handling in Java Best Practices
@@ -82,6 +84,9 @@ catch 절에서 Throwable을 사용하면 모든 예외를 catch할 뿐만 아�
 
 ## Exception Handling in Spring Boot
 
+@ControllerAdvice + 
+
+- https://dzone.com/articles/best-practice-for-exception-handling-in-spring-boo
 - https://medium.com/globant/best-practice-for-exception-handling-in-springboot-540484db8a1a
 - https://climbtheladder.com/10-spring-boot-exception-handling-best-practices/
 - https://www.toptal.com/java/spring-boot-rest-api-error-handling
@@ -91,7 +96,7 @@ catch 절에서 Throwable을 사용하면 모든 예외를 catch할 뿐만 아�
 
 ### Standard Exception
 
-#### 1. 예외 메시지로도 충분히 의미를 전달할 수 있다/
+#### 1. 예외 메시지로도 충분히 의미를 전달할 수 있다.
 
 자바에서 정의해놓은 IllegalArgumentException 등을 이용해도 그 의도가 충분히 전해질 수 있다.
 
@@ -139,3 +144,7 @@ NoSuchElementException은 이름만으로는 어떤 요소가 없는지 알 수 
 
 - https://keepgoing0328.tistory.com/entry/Java-%EC%98%88%EC%99%B8-%EC%B2%98%EB%A6%AC-custom-exception#:~:text=%ED%91%9C%EC%A4%80%EC%98%88%EC%99%B8%EB%8A%94%20%EA%B0%80%EB%8F%85%EC%84%B1%EC%9D%B4,%ED%95%98%EB%8A%94%20%EB%8B%A4%EC%96%91%ED%95%9C%20%EC%9D%B4%EC%9C%A0%EA%B0%80%20%EC%9E%88%EB%8B%A4.&text=%EC%9D%B4%EB%A6%84%EC%9C%BC%EB%A1%9C%20%EC%96%B4%EB%96%A4%20%EC%98%88%EC%99%B8%EA%B0%80,%EC%9E%88%EB%8F%84%EB%A1%9D%20%EB%AA%85%EB%AA%85%ED%95%A0%20%EC%88%98%20%EC%9E%88%EB%8B%A4.
 - https://tecoble.techcourse.co.kr/post/2020-08-17-custom-exception/
+
+에러타입에 따라 분기하는 로직 필요
+
+cause를 끄집어내서 응답 vs 그냥 메시지만 응답

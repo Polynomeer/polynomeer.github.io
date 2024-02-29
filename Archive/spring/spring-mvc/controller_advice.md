@@ -1,0 +1,2 @@
+- https://tecoble.techcourse.co.kr/post/2021-05-10-controller_advice_exception_handler/
+- https://www.baeldung.com/exception-handling-for-rest-with-spring

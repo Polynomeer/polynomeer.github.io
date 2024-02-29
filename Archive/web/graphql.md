@@ -535,11 +535,31 @@ GraphQL은 유연한 API를 만들 수 있고, 성능에서의 유리함이 있�
 ## References
 
 - https://graphql.org/
+- https://graphql.org/blog/
 - https://graphql.org/learn/
+- https://graphql.org/learn/queries/
 - https://graphql.org/learn/thinking-in-graphs/
+- https://graphql.org/code/#java-kotlin
 - https://codebots.com/crud/how-do-you-implement-crud-using-graphql
 - https://github.com/graphql-java/graphql-java
 - https://hygraph.com/blog/graphql-vs-rest-apis
 - https://tech.kakao.com/2019/08/01/graphql-basic/
 - https://docs.github.com/en/graphql
 
+
+
+Q) graphQL 이 REST 대체? 어떤 상황에 유용?
+
+Q) REST API 비교할떄 유연한것
+
+정보가 너무 많거나 없는것을 해결
+
+불필요한 필드 제거, 조합해야하는 것 쿼리 한 번의 요청으로 
+
+Q) data 필드 고정?
+
+Q) flexible api 동적으로 프로젝션하여 응답, 조회조건을 동적으로 조합해서 응답
+
+ajax도 마찬가지로 시도가 과거에 있었다
+
+조인이나 가공에대한 가능성
